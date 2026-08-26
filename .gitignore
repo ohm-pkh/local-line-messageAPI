@@ -1,0 +1,105 @@
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Go
+# =========================
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Build output
+/bin/
+/dist/
+/build/
+
+# Coverage
+coverage.out
+coverage.html
+
+# Go workspace
+go.work
+go.work.sum
+
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+.next/
+.nuxt/
+dist/
+build/
+out/
+
+# =========================
+# Docker
+# =========================
+# Local Docker volumes
+docker-data/
+mongodb-data/
+mongo-data/
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# =========================
+# Test / Coverage
+# =========================
+.nyc_output/
+coverage/
+
+# =========================
+# Terraform (if used)
+# =========================
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# =========================
+# Kubernetes
+# =========================
+# Local kube config
+.kube/
+
+# =========================
+# Secrets / Certificates
+# =========================
+*.pem
+*.key
+*.crt
+secrets/

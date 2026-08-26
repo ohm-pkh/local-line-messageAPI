@@ -1,0 +1,56 @@
+version: "0.1"
+
+services:
+  mongo:
+    image: mongo
+    container_name: ws-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    expose:
+      - "27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    # Replace with your actual backend build/image
+    build: ./backend
+    container_name: ws-backend
+    expose:
+      - "8080"
+    environment:
+      MONGODB_URI: mongodb://root:example@mongo:27017/
+      DATABASE_NAME: tryLine
+      PORT: 8080
+    ports:
+      - "3000:8080"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/v1/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  frontend:
+    build: ./frontend
+    container_name: ws-frontend
+    ports:
+      - "8081:80"
+    environment:
+      # Docker network hostname of the backend service (matches service name above)
+      BACKEND_HOST: backend
+      BACKEND_PORT: 8080
+      # Leave blank to use relative paths proxied by nginx (recommended).
+      # Set only if the browser should call the backend directly instead of via this proxy.
+      FRONTEND_BASE_URL: ""
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:

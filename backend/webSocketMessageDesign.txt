@@ -1,0 +1,35 @@
+{
+    type: (text,status)
+    replyTo: message.id
+    data: any
+}
+
+//case ส่ง
+
+{
+    type: text
+    data: {
+        message: test
+    }
+}
+
+//case update status
+
+{
+    type: status
+    replyTo: message.id
+    data: {
+        stage: (1,2,3)
+        status: (pending, success, error)
+    }
+}
+
+//case ส่ง reply message
+
+{
+    type: text
+    replyTo: message.id
+    data: {
+        message: test
+    }
+}

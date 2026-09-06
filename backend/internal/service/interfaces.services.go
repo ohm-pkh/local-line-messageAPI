@@ -17,7 +17,7 @@ type Service struct {
 }
 
 type ServiceInt interface {
-	RegisWebhook(url *dto.WebhookPath) error
+	RegisWebhook(url dto.WebhookPath) error
 	RegisteredWebhook() (string, error)
 	FindSecret() *dto.SecretResBody
 	TestSendMessage(msg string) error

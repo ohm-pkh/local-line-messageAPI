@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"log"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/ohm-pkh/local-line-messageAPI/internal/model/dto"
@@ -17,9 +18,12 @@ func (h *Handler) HandleWebhookRegister(c fiber.Ctx) error {
 		})
 	}
 
-	if err := h.Service.RegisWebhook(&req); err != nil {
+	log.Printf("REQ: %+v", req)
+	log.Printf("RAW: %s", c.Body())
+
+	if err := h.Service.RegisWebhook(req); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(dto.ResponseBody{
-			Message: "Can register webhook",
+			Message: "Fail register webhook",
 		})
 	}
 

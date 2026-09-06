@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gofiber/fiber/v3"
@@ -15,8 +16,17 @@ import (
 	apperror "github.com/ohm-pkh/local-line-messageAPI/internal/utils/app-error"
 )
 
-func (s *Service) RegisWebhook(url *dto.WebhookPath) error {
-	s.webhook = url
+func (s *Service) RegisWebhook(url dto.WebhookPath) error {
+	if s.webhook == nil {
+		s.webhook = &dto.WebhookPath{}
+	}
+
+	s.webhook.Path = url.Path
+
+	log.Printf("Request: %s", url.Path)
+
+	log.Printf("New web hook registered: %s", s.webhook.Path)
+
 	return nil
 }
 
@@ -75,9 +85,15 @@ func (s *Service) TriggerWebhook(event *dto.LineWebhook) error {
 		return &apperror.AppError{Code: 200, Message: "No webhook registered."}
 	}
 
+	path, err := s.RegisteredWebhook()
+
+	if err != nil {
+		return &apperror.AppError{Code: http.StatusInternalServerError, Message: err.Error()}
+	}
+
 	req, err := http.NewRequest(
 		http.MethodPost,
-		s.webhook.Path,
+		path,
 		bytes.NewBuffer(body),
 	)
 	if err != nil {

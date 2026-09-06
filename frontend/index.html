@@ -419,20 +419,21 @@
   // ---- Webhook registration ----
   $('webhookForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const url = $('webhookUrl').value.trim();
+    const path = $('webhookUrl').value.trim();
     const resultEl = $('webhookResult');
     const submitBtn = $('webhookSubmit');
-    if(!url) return;
+    if(!path) return;
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Registering…';
     resultEl.classList.remove('show', 'ok', 'fail');
 
     try{
+      console.log("url: "+ path)
       const res = await fetch(buildHttpUrl('/api/v1/webhook/register'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url })
+        body: JSON.stringify({path})
       });
       const text = await res.text();
       let pretty = text;
@@ -441,6 +442,7 @@
       resultEl.textContent = (res.ok ? 'Registered — ' : 'Failed (' + res.status + ') — ') + pretty;
       resultEl.classList.add('show', res.ok ? 'ok' : 'fail');
       log(res.ok ? 'Webhook registered' : 'Webhook registration failed', res.ok ? 'ok' : 'err');
+      console.log(res)
     }catch(err){
       resultEl.textContent = 'Request error: ' + err.message;
       resultEl.classList.add('show', 'fail');
